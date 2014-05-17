@@ -61,30 +61,30 @@ def gplvm_dpmix_integrate_infer(latent_dimension, n_components, Y, labels, optio
     if options.has_key('isGP'):
         isGP = optionsp['isGP']
 
-    if options.has_key('isGPLVMinit'):
-        isGPLVMinit = options['isGPLVMinit']
+if options.has_key('isGPLVMinit'):
+    isGPLVMinit = options['isGPLVMinit']
 
-    if options.has_key('isback'):
-        isback = options['isback']
+if options.has_key('isback'):
+    isback = options['isback']
 
-    if options.has_key('circle_size'):
-        circle_size = options['circle_size']
+if options.has_key('circle_size'):
+    circle_size = options['circle_size']
 
-    if options.has_key('circle_alpha'):
-        circle_alpha = options['circle_alpha']
+if options.has_key('circle_alpha'):
+    circle_alpha = options['circle_alpha']
 
-    if options.has_key('num_points'):
-        numpoints = options['num_points']
+if options.has_key('num_points'):
+    numpoints = options['num_points']
 
-    ##centering
-    Y = Y - np.tile(np.mean(Y, axis=0), (N,1))
+##centering
+Y = Y - np.tile(np.mean(Y, axis=0), (N,1))
 
-    ##Initialize X as same as the observed data Y
-    if isGP==0:
-       latent_dimension = input_dimension
-    if latent_dimension == input_dimension:
-       init_X = Y
-    elif isGPLVMinit == 1
-       gplvm_options = {}
+##Initialize X as same as the observed data Y
+if isGP==0:
+   latent_dimension = input_dimension
+if latent_dimension == input_dimension:
+   init_X = Y
+elif isGPLVMinit == 1
+   gplvm_options = {}
 #########call function gplvm_original here
-    gplvm_params = gplvm_original()
+   gplvm_params = gplvm_original()
