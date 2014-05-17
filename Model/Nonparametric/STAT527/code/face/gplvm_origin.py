@@ -21,9 +21,10 @@ def gplvm_original(Y, Q, options):
     if not(options.has_key('maxFunEvals')):
         options['maxFunEvals'] = 100
     options['Display'] = 'off'
+  ## convert the dictionary to a cell vector
 
     ###########call functions
-    unarwpped_params = unwarp(params)
+   
     minFunc
     rewrap
 

@@ -1,3 +1,5 @@
+# Initialize X 
+# update needed :operataions for params 
 import numpy as np
 def gplvm_original(Y, Q, options):
     params = {}
@@ -19,9 +21,10 @@ def gplvm_original(Y, Q, options):
     if not(options.has_key('maxFunEvals')):
         options['maxFunEvals'] = 100
     options['Display'] = 'off'
+  ## convert 
 
     ###########call functions
-    unarwpped_params = unwarp(params)
+   
     minFunc
     rewrap
 

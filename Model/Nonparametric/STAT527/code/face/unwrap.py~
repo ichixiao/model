@@ -1,0 +1,15 @@
+# Extract the numerical values from "s" into the column vector "v". The
+# variable "s" can be of any type, including struct and cell array.
+# Non-numerical elements are ignored. See also the reverse rewrap.m. 
+import numpy as np
+def unwrap(s):
+  
+    if s.isnumeric():
+        v = [float(s) for s in string.split()]          # numeric values are recast to column vector
+    elif isstruct(s)
+        v = unwrap(struct2cell(orderfields(s))); % alphabetize, conv to cell, recurse
+elseif iscell(s)
+  for i = 1:numel(s)             % cell array elements are handled sequentially
+    v = [v; unwrap(s{i})];
+  end
+end                                                   % other types are ignored
