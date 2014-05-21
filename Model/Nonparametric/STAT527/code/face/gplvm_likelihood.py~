@@ -8,7 +8,8 @@ def gplvm_likelihood( X, Y, log_hypers ) :
     (latent_dimension) = np.shape(X)[1]
     
     ## Compute kernel matrix in-place (squared exponential kernel function).
-    # Explicit specify the kernel function: ?
+    # Explicit specify the kernel function: 
+    # K = alpha * XX' + (beta^-1) * I 
     K1 = X * X.transpose() 
     Dia = np.diag(K1) 
     K1 = K1 - np.ones((N,1)) * Dia.transpose() / 2 
@@ -28,10 +29,11 @@ def gplvm_likelihood( X, Y, log_hypers ) :
 
     
     ## Calculate objective function (negative log likelihood)
-    # formula specify ?
+    # L = -(DN/2)LN(2*PI) - (D/2)ln|K| - (1/2)tr((K^-1)YY')
+    # first term above is a constant so omit below
     tmp = (K \ Y) * Y.transpose()
     gradLK = 0.5 .* (tmp - observed_dimension * np.eye(N)) / K
-    f = 0.5 * observed_dimension * logdet(K) + 0.5 * trace(tmp) 
+    f = 0.5 * observed_dimension * math.log(np.linalg.det(K)) + 0.5 * np.trace(tmp) 
 
     grad_X = zeros( N, latent_dimension ) 
     for n1 = 1:N
@@ -48,7 +50,7 @@ def gplvm_likelihood( X, Y, log_hypers ) :
   
     grad_X = grad_X * -2*math.exp(log_hypers.gamma)
     log_hypers_grad.alpha = -sum(sum(gradLK.*K2))
-    log_hypers_grad.betainv = -math.exp(log_hypers.betainv) * trace(gradLK) 
+    log_hypers_grad.betainv = -math.exp(log_hypers.betainv) * np.trace(gradLK) 
     log_hypers_grad.gamma  = -sum(sum(gradLK.*(K1.*K2)))
 
     ##gradLa=0; gradLb=0; gradLg=0; #no kernel parameter update

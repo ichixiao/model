@@ -50,7 +50,7 @@ def gaussian_dpmixture_gibbs(X,n_components):
         # v = v + Nc
         post.nus[z] = prior.nu+post.ns[z]
         # posterior mean
-        post.ms[z,:] = (prior.r * prior.m+np.sum(Xz,axis=0))/(prior.r+post.ns[z])
+        post.ms[z,:] = (prior.r * prior.m+sum(Xz,axis=0))/(prior.r+post.ns[z])
         # dim * dim matrix
         S = prior.S+Xz.T*Xz+prior.r*(np.matrix(prior.m).T*prior.m)-post.rs[z]*(np.matrix(post.ms[z,:]).T*post.ms[z,:])
         post.Chols[:,:,z] = sl.cholesky(S)

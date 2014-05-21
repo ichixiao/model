@@ -1,0 +1,43 @@
+demo_faces 
+  - preprocessing X: rescale to [-1, 1]
+  - cross-valiation partition 
+     -call function: gplvm_dpmix_integrate_infer() to get the final result
+end
+
+gplvm_dpmix_integrate_infer
+  - [ sampled_mixtures, sampled_warpings, nll, hist_assignments, acceptance_rate, movie_frames ] =...
+    gplvm_dpmix_integrate_infer( latent_dimension, n_components, Y, labels, options )
+
+  - Y: observed data
+  - Initialize X:
+     - X = Y
+     - isGPLVMinit == 1
+         -call function: gplvm_original() to initialize X
+
+gplvm_original
+  - X = Y or first Q principal components
+  - set parameters: log_hypers
+  - convert params to a numeric vector
+  - call function minFunc : call gplvm_original_likelihood as funObj
+  - call function rewrap, return all params 
+end
+
+gplvm_original_likelihood
+  Actually just do some preoperations and after operations for gplvm_likelihood
+  - call rewrap function to aggregate the values
+  - call gplvm_likelihood function
+  - return negative log likelihood and all grads parameters
+end
+
+gplvm_likelihood (formula specification needed)
+  - calculate the kernel matrix, here use the squared exponential kernel function
+  - calculate the negative log likelihood, gradient w.r.t X
+  - calculate the log hyperparameters ???
+
+unwrap 
+  - convert the input to a numeric vector alphabeize
+end
+
+rewrap
+  function [s v] = rewrap(s, v)
+  - map the numerical elements in v onto the variables s
