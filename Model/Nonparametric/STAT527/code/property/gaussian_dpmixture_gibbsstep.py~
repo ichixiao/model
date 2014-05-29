@@ -17,6 +17,7 @@ def gaussian_dpmixture_gibbsstep(X, assignments, prior, post):
         cur_z = np.nonzero(assignments[n,:])
 
         assignments(n,cur_z) = 0
+        # Nc = 0
         if post.ns(cur_z) == 1 :
             ## delete not assigned component
 #high dimension matrix delete????

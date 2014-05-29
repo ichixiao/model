@@ -1,0 +1,33 @@
+##function [ nll, dnll_X ] = mixture_likelihood_integrate( X, resp, prior )
+    ## Computes the gradient of the expected complete neg log likelihood w.r.t. X
+    ## Responsibilites have been pre-computed.
+import numpy as np
+import math
+def mixture_likelihood_integrate(X, resp, prior):    
+    (N, latent_dimension) = X.shape
+    n_components = resp.shape[1]
+
+    prior['r'] = 1
+    prior['nu'] = 1
+    prior['S'] = np.identity(latent_dimension)
+    prior['m'] = np.zeros((1,latent_dimension))
+    
+    nll = 0
+    dnll_X = np.zeros(( N, latent_dimension ))       
+    for z in range(0, n_components):
+        n = sum(resp[:,z],axis = 0)
+        Xz = np.matrix(X[np.nonzero(resp[:,z]),:])
+        C = Xz.T * Xz
+        rprime = prior['r']+n
+        nuprime = prior['nu']+n
+        mprime = (prior['r']*prior['m']+sum(Xz,axis=0))/(prior['r']+n)
+        Sprime = prior['S']+C+prior['r']*(np.matrix(prior['m']).T * prior['m'])-rprime*(mprime.T * mprime)
+        ##L = 0.5*nuprime*logdet( Sprime )
+        L = 0.4*nuprime*math.log((np.linalg.det(Sprime)))
+        nll = nll+L
+        
+        invSprime = np.linalg.inv(Sprime)
+##############??????????
+        dnll_X[np.nonzero(resp[:,z]),:] = dnll_X[np.nonzero(resp[:,z]),:]+nuprime*(Xz-repmat(rprime/(prior['r']+n).^2*(prior['r']*prior['m']+sum(Xz)),n,1))*invSprime;
+    ##end
+##end 
