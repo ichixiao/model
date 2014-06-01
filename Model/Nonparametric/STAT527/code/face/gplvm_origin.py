@@ -25,8 +25,10 @@ def gplvm_original(Y, Q, options):
 
     ###########call functions
    
-    minFunc
-    rewrap
+    unwrapped_params = minFunc(unwrapped_params, options, Y, params)
+    params = rewrap(params, unwrapped_params)
+
+    return params
 
 
         

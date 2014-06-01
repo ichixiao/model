@@ -16,7 +16,8 @@ def mixture_likelihood_integrate(X, resp, prior):
     dnll_X = np.zeros(( N, latent_dimension ))       
     for z in range(0, n_components):
         n = sum(resp[:,z],axis = 0)
-        Xz = np.matrix(X[np.nonzero(resp[:,z]),:])
+        (row, col) = np.nonzero(resp[:,z])
+        Xz = np.matrix(X[row,:])
         C = Xz.T * Xz
         rprime = prior['r']+n
         nuprime = prior['nu']+n
@@ -27,6 +28,8 @@ def mixture_likelihood_integrate(X, resp, prior):
         nll = nll+L
         
         invSprime = np.linalg.inv(Sprime)
-        dnll_X[np.nonzero(resp[:,z]),:] = dnll_X[np.nonzero(resp[:,z]),:]+nuprime*(Xz-repmat(rprime/(prior['r']+n).^2*(prior['r']*prior['m']+sum(Xz)),n,1))*invSprime;
+        ##dnll_X[np.nonzero(resp[:,z]),:] = dnll_X[np.nonzero(resp[:,z]),:]+nuprime*(Xz-repmat((rprime/pow((prior['r']+n), 2))*(prior['r']*prior['m']+sum(Xz)),n,1))*invSprime;
+        tmp = (rprime/pow(prior['r']+n, 2)) * (prior['r']*prior['m'] + sum(Xz))
+        dnll_X[row, :] = dnll_X[row, :] + nuprime * (Xz-np.kron(ones((n,1)), tmp))
     ##end
 ##end 
